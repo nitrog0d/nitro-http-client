@@ -27,7 +27,7 @@ export function headersFromRawHeaders(rawHeaders: string[]) {
 
 export function mapToDict(map: Map<string, string>) {
   const dict: http.OutgoingHttpHeaders = {};
-  map.forEach((value, key) => dict![key] = value);
+  map.forEach((value, key) => dict[key] = value);
   return dict;
 }
 
