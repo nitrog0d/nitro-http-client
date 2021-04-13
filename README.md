@@ -12,7 +12,7 @@ It does not support/handle compression, I'll eventually implement it according t
 
 ## Usage
 
-### JavaScript:
+### JavaScript
 **Create the client**
 ```js
 const nitroHttpClient = require('nitro-http-client');
