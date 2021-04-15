@@ -64,8 +64,6 @@ export class NitroHttpClient {
         if (options.headers) Object.entries(options.headers).map(value => newHeaders[value[0]] = value[1]);
         options.headers = newHeaders;
 
-        console.log(options.headers);
-
         options.host = parsedUrl.host;
         options.port = parsedUrl.port.length !== 0 ? parsedUrl.port : isHttps ? 443 : 80;
         options.path = parsedUrl.pathname + parsedUrl.search;
