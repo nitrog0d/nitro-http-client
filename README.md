@@ -17,13 +17,6 @@ It does not support/handle compression, I'll eventually implement it according t
 ```js
 const nitroHttpClient = require('nitro-http-client');
 const httpClient = new nitroHttpClient.NitroHttpClient();
-
-// You can set optional settings in the constructor
-// Default values are true
-/*const httpClient = new nitroHttpClient.NitroHttpClient({
-  responseBodyAsString: false,
-  setContentLengthAutomatically: true
-});*/
 ```
 
 ### TypeScript
@@ -31,13 +24,6 @@ const httpClient = new nitroHttpClient.NitroHttpClient();
 ```ts
 import { NitroHttpClient } from 'nitro-http-client';
 const httpClient = new NitroHttpClient();
-
-// You can set optional settings in the constructor
-// Default values are true
-/*const httpClient = new NitroHttpClient({
-  responseBodyAsString: false,
-  setContentLengthAutomatically: true
-});*/
 ```
 
 ### Examples
