@@ -10,18 +10,17 @@ export interface HttpResponse {
 
 export interface HttpRequestOptions {
   body?: string | Buffer;
-}
-
-export interface ClientSettings {
   setContentLengthAutomatically?: boolean;
   responseBodyAsString?: boolean;
 }
+
+export interface ClientSettings {}
 
 export function headersFromRawHeaders(rawHeaders: string[]) {
   if (rawHeaders.length === 0) return {};
   const convertedHeaders: http.OutgoingHttpHeaders = {};
   const length = rawHeaders.length / 2;
-  for (let i = 0; i < length; i++) convertedHeaders[rawHeaders.shift()!] = rawHeaders.shift();
+  for (let i = 0; i < length; i++) convertedHeaders[rawHeaders.shift()] = rawHeaders.shift();
   return convertedHeaders;
 }
 
@@ -39,16 +38,10 @@ export function dictToMap(dict: http.OutgoingHttpHeaders) {
 
 export class NitroHttpClient {
 
-  public clientSettings: ClientSettings = {
-    responseBodyAsString: true,
-    setContentLengthAutomatically: true
-  };
+  public clientSettings: ClientSettings = {};
 
   constructor(clientSettings?: ClientSettings) {
-    if (clientSettings) {
-      if (clientSettings.setContentLengthAutomatically !== undefined) this.clientSettings.setContentLengthAutomatically = clientSettings.setContentLengthAutomatically;
-      if (clientSettings.responseBodyAsString !== undefined) this.clientSettings.responseBodyAsString = clientSettings.responseBodyAsString;
-    }
+    if (clientSettings) {}
   }
 
   public async request(url: string, options?: HttpRequestOptions & https.RequestOptions): Promise<HttpResponse> {
@@ -58,9 +51,13 @@ export class NitroHttpClient {
         const isHttps = parsedUrl.protocol === 'https:';
         if (!options) options = {};
 
+        if (options.setContentLengthAutomatically === undefined) options.setContentLengthAutomatically = true;
+        if (options.responseBodyAsString === undefined) options.responseBodyAsString = true;
+
         const newHeaders: http.OutgoingHttpHeaders = {
           Host: parsedUrl.host
         }
+
         if (options.headers) Object.entries(options.headers).map(value => newHeaders[value[0]] = value[1]);
         options.headers = newHeaders;
 
@@ -68,7 +65,7 @@ export class NitroHttpClient {
         options.port = parsedUrl.port.length !== 0 ? parsedUrl.port : isHttps ? 443 : 80;
         options.path = parsedUrl.pathname + parsedUrl.search;
 
-        if (this.clientSettings.setContentLengthAutomatically && !options.headers['Content-Length'] && options.body) options.headers['Content-Length'] = options.body.length;
+        if (options.setContentLengthAutomatically && !options.headers['Content-Length'] && options.body) options.headers['Content-Length'] = options.body.length;
 
         const callback = (res: http.IncomingMessage) => {
           const chunks: Buffer[] = [];
@@ -79,7 +76,7 @@ export class NitroHttpClient {
 
           res.on('end', () => {
             const finalBuffer = Buffer.concat(chunks);
-            resolve({ body: finalBuffer.length !== 0 ? (this.clientSettings.responseBodyAsString ? finalBuffer.toString('utf8') : finalBuffer) : undefined, headers: res.rawHeaders.length !== 0 ? headersFromRawHeaders(res.rawHeaders) : undefined, statusCode: res.statusCode, statusMessage: res.statusMessage });
+            resolve({ body: finalBuffer.length !== 0 ? (options.responseBodyAsString ? finalBuffer.toString('utf8') : finalBuffer) : undefined, headers: res.rawHeaders.length !== 0 ? headersFromRawHeaders(res.rawHeaders) : undefined, statusCode: res.statusCode, statusMessage: res.statusMessage });
           });
 
           res.on('error', (error) => {

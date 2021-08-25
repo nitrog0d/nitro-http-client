@@ -1,6 +1,6 @@
 {
   "name": "nitro-http-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A HTTP client module I made because I can't deal with other modules",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
