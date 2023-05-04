@@ -15,8 +15,8 @@ It does not support/handle compression, I'll eventually implement it according t
 ### JavaScript
 **Create the client**
 ```js
-const nitroHttpClient = require('nitro-http-client');
-const httpClient = new nitroHttpClient.NitroHttpClient();
+const { NitroHttpClient } = require('nitro-http-client');
+const httpClient = new NitroHttpClient();
 ```
 
 ### TypeScript

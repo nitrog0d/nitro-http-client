@@ -62,7 +62,7 @@ export class NitroHttpClient {
         options.headers = newHeaders;
 
         options.host = parsedUrl.host;
-        options.port = parsedUrl.port.length !== 0 ? parsedUrl.port : isHttps ? 443 : 80;
+        if (options.port === undefined) options.port = parsedUrl.port.length !== 0 ? parsedUrl.port : isHttps ? 443 : 80;
         options.path = parsedUrl.pathname + parsedUrl.search;
 
         if (options.setContentLengthAutomatically && !options.headers['Content-Length'] && options.body) options.headers['Content-Length'] = options.body.length;
