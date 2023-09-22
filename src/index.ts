@@ -55,13 +55,13 @@ export class NitroHttpClient {
         if (options.responseBodyAsString === undefined) options.responseBodyAsString = true;
 
         const newHeaders: http.OutgoingHttpHeaders = {
-          Host: parsedUrl.host
+          Host: parsedUrl.hostname
         }
 
         if (options.headers) Object.entries(options.headers).map(value => newHeaders[value[0]] = value[1]);
         options.headers = newHeaders;
 
-        options.host = parsedUrl.host;
+        options.host = parsedUrl.hostname;
         if (options.port === undefined) options.port = parsedUrl.port.length !== 0 ? parsedUrl.port : isHttps ? 443 : 80;
         options.path = parsedUrl.pathname + parsedUrl.search;
 
