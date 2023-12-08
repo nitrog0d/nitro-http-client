@@ -76,7 +76,13 @@ export class NitroHttpClient {
 
           res.on('end', () => {
             const finalBuffer = Buffer.concat(chunks);
-            resolve({ body: finalBuffer.length !== 0 ? (options.responseBodyAsString ? finalBuffer.toString('utf8') : finalBuffer) : undefined, headers: res.rawHeaders.length !== 0 ? headersFromRawHeaders(res.rawHeaders) : undefined, statusCode: res.statusCode, statusMessage: res.statusMessage });
+
+            resolve({
+              body: finalBuffer.length !== 0 ? (options.responseBodyAsString ? finalBuffer.toString('utf8') : finalBuffer) : undefined,
+              headers: res.rawHeaders.length !== 0 ? headersFromRawHeaders([ ...res.rawHeaders ]) : undefined,
+              statusCode: res.statusCode,
+              statusMessage: res.statusMessage
+            });
           });
 
           res.on('error', (error) => {
